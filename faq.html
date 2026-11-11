@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | SMB Services</title>
+<meta name="description" content="Perguntas frequentes sobre backup, resiliência e os serviços da SMB Services.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
+    <nav class="main-nav">
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre Nós</a>
+      <a href="servicos/index.html">Serviços</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="faq.html" class="active">FAQ</a>
+      <a href="contacto.html" class="btn btn-primary">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="eyebrow">FAQ</div>
+    <h1>Perguntas frequentes</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width:720px;">
+
+    <details class="faq-item" open>
+      <summary>Já tenho backup. Porque preciso de um Health Check?</summary>
+      <p>Ter um job de backup configurado não garante que os dados são realmente restauráveis. Muitas falhas só aparecem no momento da restauração — altura em que já é tarde para corrigir. O Health Check testa isso antes de precisares.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Qual a diferença entre backup e resiliência?</summary>
+      <p>Backup é ter uma cópia dos dados. Resiliência é a capacidade de voltar a funcionar rapidamente depois de um incidente — envolve infraestrutura, processos e tempo de recuperação, não só a existência de uma cópia.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Os backups protegem contra ransomware?</summary>
+      <p>Nem sempre. Se o backup não estiver isolado/imutável, pode ser encriptado ou apagado no mesmo ataque que afeta os dados originais. O Ransomware Readiness Assessment verifica especificamente isto.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Trabalham só com Commvault e Veeam?</summary>
+      <p>São as nossas principais parcerias tecnológicas, mas a avaliação inicial é feita de forma independente da tecnologia que já usas.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Quanto tempo demora uma avaliação?</summary>
+      <p style="font-style:italic; color:var(--text-muted-dark);">(A confirmar: prazos típicos por tipo de serviço.)</p>
+    </details>
+
+    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">(Nota: esta é uma primeira versão da FAQ pública — vamos acrescentando perguntas reais à medida que surgirem dos clientes.)</p>
+
+  </div>
+</section>
+
+<section class="section section-alt" id="area-privada">
+  <div class="container" style="max-width:720px; text-align:center;">
+    <h2>Área privada</h2>
+    <p>Procedimentos internos e documentação técnica para uso exclusivo da equipa SMB Services.</p>
+    <a href="area-privada/index.html" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Aceder à área privada →</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>SMB Services</h4>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para o seu negócio. Rio de Janeiro, Brasil.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="sobre.html">Sobre Nós</a></li>
+          <li><a href="servicos/index.html">Serviços</a></li>
+          <li><a href="blog/index.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="#area-privada">Área privada</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SMB Services. Todos os direitos reservados.</span>
+      <span>Rio de Janeiro, Brasil</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

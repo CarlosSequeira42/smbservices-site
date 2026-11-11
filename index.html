@@ -3,59 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMB Services — Em construção</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: #f1f5f9;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-  }
-  .card {
-    max-width: 560px;
-  }
-  .badge {
-    display: inline-block;
-    background: rgba(56, 189, 248, 0.15);
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    border-radius: 999px;
-    padding: 6px 16px;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-  h1 {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-    line-height: 1.2;
-  }
-  p {
-    font-size: 1.05rem;
-    color: #cbd5e1;
-    line-height: 1.6;
-  }
-  .footer {
-    margin-top: 40px;
-    font-size: 0.85rem;
-    color: #64748b;
-  }
-</style>
+<title>SMB Services | Resiliência para o seu negócio</title>
+<meta name="description" content="A SMB Services avalia, corrige e gere os backups de empresas que não podem parar. Backup Health Check, Ransomware Readiness, Migração e Gestão de Backup.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="card">
-    <span class="badge">Em construção</span>
-    <h1>Estamos a preparar algo novo.</h1>
-    <p>O site da SMB Services está a ser atualizado. Voltaremos em breve com uma nova versão.</p>
-    <div class="footer">&copy; <span id="year"></span> SMB Services</div>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
+    <nav class="main-nav">
+      <a href="index.html" class="active">Início</a>
+      <a href="sobre.html">Sobre Nós</a>
+      <a href="servicos/index.html">Serviços</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contacto.html" class="btn btn-primary">Contacto</a>
+    </nav>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="eyebrow">Backup &amp; Resiliência de Dados</div>
+    <h1>Resiliência para o seu negócio.</h1>
+    <p style="max-width:680px; font-size:18px; margin-top:20px;">A SMB Services protege a infraestrutura de dados de empresas que não podem parar. Avaliamos, corrigimos e gerimos os seus backups para que um incidente — falha técnica, erro humano ou ataque de ransomware — nunca signifique perda de dados ou dias de operação parada.</p>
+    <div style="margin-top:32px; display:flex; gap:16px; flex-wrap:wrap;">
+      <a href="contacto.html" class="btn btn-primary">Pedir uma avaliação gratuita →</a>
+      <a href="servicos/index.html" class="btn btn-ghost">Ver serviços</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>O que fazemos</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="tag">Diagnóstico</div>
+        <h3>Backup Health Check</h3>
+        <p>Diagnóstico completo do seu ambiente de backup atual.</p>
+        <a href="servicos/backup-health-check.html" class="btn-link" style="color:var(--teal); font-weight:600; font-size:14px;">Saber mais →</a>
+      </div>
+      <div class="card">
+        <div class="tag">Avaliação</div>
+        <h3>Infrastructure Resilience Assessment</h3>
+        <p>Avaliação da capacidade da sua infraestrutura de resistir e recuperar de falhas.</p>
+        <a href="servicos/infrastructure-resilience-assessment.html" class="btn-link" style="color:var(--teal); font-weight:600; font-size:14px;">Saber mais →</a>
+      </div>
+      <div class="card">
+        <div class="tag">Segurança</div>
+        <h3>Ransomware Readiness Assessment</h3>
+        <p>Teste da sua real capacidade de recuperação após um ataque.</p>
+        <a href="servicos/ransomware-readiness-assessment.html" class="btn-link" style="color:var(--teal); font-weight:600; font-size:14px;">Saber mais →</a>
+      </div>
+      <div class="card">
+        <div class="tag">Implementação</div>
+        <h3>Backup Migration &amp; Implementation</h3>
+        <p>Migração e implementação de soluções de backup.</p>
+        <a href="servicos/backup-migration-implementation.html" class="btn-link" style="color:var(--teal); font-weight:600; font-size:14px;">Saber mais →</a>
+      </div>
+      <div class="card">
+        <div class="tag">Gestão contínua</div>
+        <h3>Managed Backup Advisory</h3>
+        <p>Acompanhamento contínuo e especializado da sua estratégia de backup.</p>
+        <a href="servicos/managed-backup-advisory.html" class="btn-link" style="color:var(--teal); font-weight:600; font-size:14px;">Saber mais →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <h2 style="text-align:center;">Trabalhamos com tecnologias líderes de mercado</h2>
+    <p style="text-align:center; max-width:640px; margin:0 auto 12px;">Cobrimos as principais plataformas de backup e proteção de dados: <strong>Commvault</strong>, <strong>Veeam</strong>, <strong>Cohesity</strong> e <strong>NetBackup</strong>.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Pronto para saber se os seus backups realmente funcionam?</h2>
+      <p>Peça uma avaliação gratuita e descubra onde estão os riscos antes de uma crise real.</p>
+      <a href="contacto.html" class="btn btn-primary">Pedir uma avaliação gratuita →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>SMB Services</h4>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para o seu negócio. Rio de Janeiro, Brasil.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="sobre.html">Sobre Nós</a></li>
+          <li><a href="servicos/index.html">Serviços</a></li>
+          <li><a href="blog/index.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="faq.html#area-privada">Área privada</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SMB Services. Todos os direitos reservados.</span>
+      <span>Rio de Janeiro, Brasil</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>

@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "SMB Services - Area Privada"
+AuthUserFile /home/u902022626/domains/smbservices.com.br/public_html/area-privada/.htpasswd
+Require valid-user
