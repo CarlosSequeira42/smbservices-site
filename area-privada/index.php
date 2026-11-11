@@ -1,3 +1,4 @@
+<?php require __DIR__ . '/procedimentos.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -18,6 +19,7 @@
     <a href="../index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
     <nav class="main-nav">
       <a href="../faq.html">← Voltar à FAQ pública</a>
+      <a href="editar.php" class="btn btn-primary">Editar conteúdo</a>
     </nav>
   </div>
 </header>
@@ -33,22 +35,21 @@
 <section class="section">
   <div class="container" style="max-width:720px;">
 
-    <details class="faq-item" open>
-      <summary>Procedimento: verificação mensal de integridade de backup</summary>
-      <p><em>(A preencher — adicionar os passos do procedimento interno aqui.)</em></p>
-    </details>
+    <?php
+    $procedimentos = listar_procedimentos();
+    if (empty($procedimentos)) {
+        echo '<p><em>Ainda não há procedimentos cadastrados.</em></p>';
+    }
+    foreach ($procedimentos as $i => $p) {
+        $aberto = $i === 0 ? ' open' : '';
+        echo '<details class="faq-item"' . $aberto . '>';
+        echo '<summary>' . htmlspecialchars($p['titulo']) . '</summary>';
+        echo '<div style="white-space:pre-wrap;">' . htmlspecialchars($p['conteudo']) . '</div>';
+        echo '</details>';
+    }
+    ?>
 
-    <details class="faq-item">
-      <summary>Procedimento: resposta a incidente de ransomware</summary>
-      <p><em>(A preencher — adicionar os passos do procedimento interno aqui.)</em></p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Contactos de escalonamento (Commvault / Veeam / Cohesity)</summary>
-      <p><em>(A preencher — adicionar contactos de suporte dos fabricantes.)</em></p>
-    </details>
-
-    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página está protegida por autenticação (utilizador e senha) a nível do servidor. Peça ao Claude, em chat, para adicionar ou atualizar conteúdo aqui a qualquer momento.</p>
+    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página está protegida por autenticação (utilizador e senha) a nível do servidor. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
   </div>
 </section>
 

@@ -1,0 +1,17 @@
+[
+    {
+        "id": "1",
+        "titulo": "Procedimento: verificação mensal de integridade de backup",
+        "conteudo": "(A preencher — adicionar os passos do procedimento interno aqui.)"
+    },
+    {
+        "id": "2",
+        "titulo": "Procedimento: resposta a incidente de ransomware",
+        "conteudo": "(A preencher — adicionar os passos do procedimento interno aqui.)"
+    },
+    {
+        "id": "3",
+        "titulo": "Contactos de escalonamento (Commvault / Veeam / Cohesity)",
+        "conteudo": "(A preencher — adicionar contactos de suporte dos fabricantes.)"
+    }
+]
