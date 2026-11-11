@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script src="https://www.google.com/recaptcha/api.js?render=6LdvTxsuAAAAAE9ZewgWjenP9W2XUGRmscoWSbQl"></script>
 </head>
 <body>
 
@@ -85,7 +86,10 @@
         </div>
         <!-- carimbo de hora: usado no servidor para detetar envios instantâneos de bots -->
         <input type="hidden" id="loaded_at" name="loaded_at" value="">
-        <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Enviar pedido →</button>
+        <!-- preenchido automaticamente pelo reCAPTCHA v3 antes do envio -->
+        <input type="hidden" id="recaptcha_token" name="recaptcha_token" value="">
+        <button type="submit" id="submit-btn" class="btn btn-primary" style="border:none; cursor:pointer;">Enviar pedido →</button>
+        <p style="font-size:12px; color:var(--text-muted-dark); margin-top:12px;">Este site é protegido pelo reCAPTCHA e aplicam-se a <a href="https://policies.google.com/privacy" style="color:var(--teal);" target="_blank" rel="noopener">Política de Privacidade</a> e os <a href="https://policies.google.com/terms" style="color:var(--teal);" target="_blank" rel="noopener">Termos de Serviço</a> do Google.</p>
       </form>
     </div>
     <div class="card">
@@ -137,6 +141,23 @@
     document.getElementById('form-error').style.display = 'block';
   }
   document.getElementById('loaded_at').value = Math.floor(Date.now() / 1000);
+
+  var form = document.getElementById('contact-form');
+  var submitBtn = document.getElementById('submit-btn');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    grecaptcha.ready(function () {
+      grecaptcha.execute('6LdvTxsuAAAAAE9ZewgWjenP9W2XUGRmscoWSbQl', { action: 'contact' }).then(function (token) {
+        document.getElementById('recaptcha_token').value = token;
+        form.submit();
+      }).catch(function () {
+        // Se o reCAPTCHA falhar ao carregar, envia mesmo assim; o servidor
+        // decide se aceita (ex.: bloqueadores de script no navegador do visitante).
+        form.submit();
+      });
+    });
+  });
 })();
 </script>
 

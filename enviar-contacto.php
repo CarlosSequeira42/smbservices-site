@@ -24,6 +24,47 @@ if (!empty($_POST['website'])) {
     voltar('enviado'); // responde como sucesso para não dar pistas a bots
 }
 
+// Verificação reCAPTCHA v3: confirma com o Google que quem submeteu tem
+// comportamento humano (score >= 0.5). A chave secreta vive apenas no
+// servidor, em recaptcha-secret.php (nunca commitado no Git).
+$recaptchaConfigPath = __DIR__ . '/recaptcha-secret.php';
+if (file_exists($recaptchaConfigPath)) {
+    $recaptchaConfig = include $recaptchaConfigPath;
+    $recaptchaSecret = is_array($recaptchaConfig) && isset($recaptchaConfig['secret_key'])
+        ? $recaptchaConfig['secret_key']
+        : '';
+    $token = isset($_POST['recaptcha_token']) ? $_POST['recaptcha_token'] : '';
+
+    if ($recaptchaSecret !== '' && $recaptchaSecret !== 'COLOQUE_AQUI_A_SUA_CHAVE_SECRETA') {
+        if ($token === '') {
+            voltar('erro');
+        }
+        $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+        $contexto = stream_context_create(array(
+            'http' => array(
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+                'content' => http_build_query(array(
+                    'secret'   => $recaptchaSecret,
+                    'response' => $token,
+                    'remoteip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+                )),
+                'timeout' => 5,
+            ),
+        ));
+        $resposta = @file_get_contents($verifyUrl, false, $contexto);
+        $resultado = $resposta ? json_decode($resposta, true) : null;
+        $pontuacao = is_array($resultado) && isset($resultado['score']) ? $resultado['score'] : 0;
+        $sucesso = is_array($resultado) && !empty($resultado['success']);
+
+        // Se não conseguirmos contactar o Google, deixamos passar (falha aberta)
+        // em vez de bloquear pedidos legítimos por uma falha de rede.
+        if ($resultado !== null && (!$sucesso || $pontuacao < 0.5)) {
+            voltar('enviado'); // trata como spam sem dar pistas ao remetente
+        }
+    }
+}
+
 // Verifica se o pedido veio de uma página do próprio site (bloqueia envios
 // feitos diretamente a este script, fora do formulário).
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
