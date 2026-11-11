@@ -40,12 +40,21 @@
     if (empty($procedimentos)) {
         echo '<p><em>Ainda não há procedimentos cadastrados.</em></p>';
     }
-    foreach ($procedimentos as $i => $p) {
-        $aberto = $i === 0 ? ' open' : '';
-        echo '<details class="faq-item"' . $aberto . '>';
-        echo '<summary>' . htmlspecialchars($p['titulo']) . '</summary>';
-        echo '<div style="white-space:pre-wrap;">' . htmlspecialchars($p['conteudo']) . '</div>';
-        echo '</details>';
+    $grupos = agrupar_por_categoria($procedimentos);
+    $primeiro = true;
+    foreach (CATEGORIAS as $chave => $nome) {
+        if (empty($grupos[$chave])) {
+            continue;
+        }
+        echo '<h2 style="margin:' . ($primeiro ? '0' : '32px') . ' 0 12px; font-size:20px;">' . htmlspecialchars($nome) . '</h2>';
+        foreach ($grupos[$chave] as $p) {
+            $aberto = $primeiro ? ' open' : '';
+            echo '<details class="faq-item"' . $aberto . '>';
+            echo '<summary>' . htmlspecialchars($p['titulo']) . '</summary>';
+            echo '<div style="white-space:pre-wrap;">' . htmlspecialchars($p['conteudo']) . '</div>';
+            echo '</details>';
+            $primeiro = false;
+        }
     }
     ?>
 

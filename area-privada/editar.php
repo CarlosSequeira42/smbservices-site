@@ -11,9 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($acao === 'adicionar') {
         $titulo = trim($_POST['titulo'] ?? '');
         $conteudo = trim($_POST['conteudo'] ?? '');
+        $categoria = $_POST['categoria'] ?? '';
+        if (!isset(CATEGORIAS[$categoria])) {
+            $categoria = 'outros';
+        }
         if ($titulo !== '') {
             $procedimentos[] = [
                 'id' => novo_id($procedimentos),
+                'categoria' => $categoria,
                 'titulo' => $titulo,
                 'conteudo' => $conteudo,
             ];
@@ -26,10 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'] ?? '';
         $titulo = trim($_POST['titulo'] ?? '');
         $conteudo = trim($_POST['conteudo'] ?? '');
+        $categoria = $_POST['categoria'] ?? '';
+        if (!isset(CATEGORIAS[$categoria])) {
+            $categoria = 'outros';
+        }
         foreach ($procedimentos as &$p) {
             if ($p['id'] === $id) {
                 $p['titulo'] = $titulo;
                 $p['conteudo'] = $conteudo;
+                $p['categoria'] = $categoria;
                 break;
             }
         }
@@ -111,6 +121,14 @@ foreach ($procedimentos as $p) {
           <input type="text" id="titulo" name="titulo" required value="<?php echo $editando ? htmlspecialchars($editando['titulo']) : ''; ?>">
         </div>
         <div class="form-field">
+          <label for="categoria">Serviço / Categoria</label>
+          <select id="categoria" name="categoria" required>
+            <?php foreach (CATEGORIAS as $chave => $nome): ?>
+              <option value="<?php echo htmlspecialchars($chave); ?>" <?php echo ($editando && $editando['categoria'] === $chave) ? 'selected' : ''; ?>><?php echo htmlspecialchars($nome); ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="form-field">
           <label for="conteudo">Conteúdo</label>
           <textarea id="conteudo" name="conteudo" rows="8"><?php echo $editando ? htmlspecialchars($editando['conteudo']) : ''; ?></textarea>
         </div>
@@ -125,19 +143,24 @@ foreach ($procedimentos as $p) {
     <?php if (empty($procedimentos)): ?>
       <p><em>Ainda não há procedimentos cadastrados.</em></p>
     <?php endif; ?>
-    <?php foreach ($procedimentos as $p): ?>
-      <div class="card" style="margin-bottom:16px;">
-        <h3 style="margin-bottom:6px;"><?php echo htmlspecialchars($p['titulo']); ?></h3>
-        <p style="white-space:pre-wrap; font-size:14px; color:#334155;"><?php echo htmlspecialchars($p['conteudo']); ?></p>
-        <div style="display:flex; gap:10px; margin-top:12px;">
-          <a href="editar.php?editar=<?php echo urlencode($p['id']); ?>" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 14px;">Editar</a>
-          <form method="post" action="editar.php" onsubmit="return confirm('Remover este procedimento?');" style="margin:0;">
-            <input type="hidden" name="acao" value="remover">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($p['id']); ?>">
-            <button type="submit" style="border:none; background:none; color:#dc2626; font-size:13px; font-weight:600; cursor:pointer; padding:8px 14px;">Remover</button>
-          </form>
+    <?php $grupos = agrupar_por_categoria($procedimentos); ?>
+    <?php foreach (CATEGORIAS as $chave => $nome): ?>
+      <?php if (empty($grupos[$chave])) continue; ?>
+      <h4 style="margin:24px 0 10px; color:var(--text-muted-dark);"><?php echo htmlspecialchars($nome); ?></h4>
+      <?php foreach ($grupos[$chave] as $p): ?>
+        <div class="card" style="margin-bottom:16px;">
+          <h3 style="margin-bottom:6px;"><?php echo htmlspecialchars($p['titulo']); ?></h3>
+          <p style="white-space:pre-wrap; font-size:14px; color:#334155;"><?php echo htmlspecialchars($p['conteudo']); ?></p>
+          <div style="display:flex; gap:10px; margin-top:12px;">
+            <a href="editar.php?editar=<?php echo urlencode($p['id']); ?>" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 14px;">Editar</a>
+            <form method="post" action="editar.php" onsubmit="return confirm('Remover este procedimento?');" style="margin:0;">
+              <input type="hidden" name="acao" value="remover">
+              <input type="hidden" name="id" value="<?php echo htmlspecialchars($p['id']); ?>">
+              <button type="submit" style="border:none; background:none; color:#dc2626; font-size:13px; font-weight:600; cursor:pointer; padding:8px 14px;">Remover</button>
+            </form>
+          </div>
         </div>
-      </div>
+      <?php endforeach; ?>
     <?php endforeach; ?>
 
   </div>
