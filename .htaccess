@@ -1,0 +1,4 @@
+# Bloqueia o acesso direto a ficheiros internos do site.
+<FilesMatch "^(\.htaccess|\.htpasswd|\.contacto-limite\.json)$">
+  Require all denied
+</FilesMatch>

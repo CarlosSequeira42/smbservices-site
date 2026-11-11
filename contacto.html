@@ -83,6 +83,8 @@
           <label for="website">Não preencher</label>
           <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
         </div>
+        <!-- carimbo de hora: usado no servidor para detetar envios instantâneos de bots -->
+        <input type="hidden" id="loaded_at" name="loaded_at" value="">
         <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Enviar pedido →</button>
       </form>
     </div>
@@ -134,6 +136,7 @@
   } else if (params.get('erro') === '1') {
     document.getElementById('form-error').style.display = 'block';
   }
+  document.getElementById('loaded_at').value = Math.floor(Date.now() / 1000);
 })();
 </script>
 

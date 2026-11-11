@@ -24,6 +24,50 @@ if (!empty($_POST['website'])) {
     voltar('enviado'); // responde como sucesso para não dar pistas a bots
 }
 
+// Verifica se o pedido veio de uma página do próprio site (bloqueia envios
+// feitos diretamente a este script, fora do formulário).
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+if ($referer !== '' && strpos($referer, 'smbservices.com.br') === false) {
+    voltar('enviado');
+}
+
+// Verifica o tempo entre o carregamento da página e o envio: bots costumam
+// submeter o formulário em menos de 2 segundos.
+$carregadoEm = isset($_POST['loaded_at']) ? (int) $_POST['loaded_at'] : 0;
+if ($carregadoEm > 0 && (time() - $carregadoEm) < 2) {
+    voltar('enviado');
+}
+
+// Limite simples: no máximo 5 envios por IP a cada 60 minutos, guardado
+// num ficheiro local (sem necessidade de base de dados).
+$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'desconhecido';
+$limiteFicheiro = __DIR__ . '/.contacto-limite.json';
+$janela = 3600; // 1 hora
+$maxEnvios = 5;
+$agora = time();
+$registo = array();
+if (is_readable($limiteFicheiro)) {
+    $conteudo = json_decode(file_get_contents($limiteFicheiro), true);
+    if (is_array($conteudo)) {
+        $registo = $conteudo;
+    }
+}
+// limpa entradas antigas e conta envios recentes deste IP
+foreach ($registo as $chaveIp => $tempos) {
+    $registo[$chaveIp] = array_values(array_filter($tempos, function ($t) use ($agora, $janela) {
+        return ($agora - $t) < $janela;
+    }));
+    if (empty($registo[$chaveIp])) {
+        unset($registo[$chaveIp]);
+    }
+}
+$envioseRecentes = isset($registo[$ip]) ? count($registo[$ip]) : 0;
+if ($envioseRecentes >= $maxEnvios) {
+    voltar('erro');
+}
+$registo[$ip][] = $agora;
+@file_put_contents($limiteFicheiro, json_encode($registo));
+
 function campo($nome) {
     return isset($_POST[$nome]) ? trim(strip_tags($_POST[$nome])) : '';
 }
