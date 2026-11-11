@@ -23,14 +23,20 @@ use PHPMailer\PHPMailer\Exception as PHPMailerException;
 $destino = 'contato@smbservices.com.br';
 $siteUrl = 'https://smbservices.com.br';
 
+// Página de contacto a usar no redireccionamento: a inglesa quando o
+// formulário foi submetido a partir de en/contact.html (campo oculto
+// "idioma"), a portuguesa (predefinição) em qualquer outro caso.
+$idioma = (isset($_POST['idioma']) && $_POST['idioma'] === 'en') ? 'en' : 'pt';
+$paginaContacto = ($idioma === 'en') ? 'en/contact.html' : 'contacto.html';
+
 function voltar($status) {
-    global $siteUrl;
-    header('Location: ' . $siteUrl . '/contacto.html?' . $status . '=1');
+    global $siteUrl, $paginaContacto;
+    header('Location: ' . $siteUrl . '/' . $paginaContacto . '?' . $status . '=1');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ' . $siteUrl . '/contacto.html');
+    header('Location: ' . $siteUrl . '/' . $paginaContacto);
     exit;
 }
 
@@ -165,7 +171,8 @@ $corpo .= "Nome: {$nome}\n";
 $corpo .= "Empresa: " . ($empresa !== '' ? $empresa : '-') . "\n";
 $corpo .= "E-mail: {$email}\n";
 $corpo .= "Telefone / WhatsApp: " . ($telefone !== '' ? $telefone : '-') . "\n";
-$corpo .= "Serviço de interesse: {$servicoLabel}\n\n";
+$corpo .= "Serviço de interesse: {$servicoLabel}\n";
+$corpo .= "Origem: site em " . ($idioma === 'en' ? 'inglês' : 'português') . "\n\n";
 $corpo .= "Mensagem:\n" . $mensagem . "\n";
 
 // Credenciais SMTP (smtp-secret.php, criado manualmente no servidor):

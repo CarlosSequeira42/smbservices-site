@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | SMB Services</title>
+<meta name="description" content="Request a free assessment or talk to the SMB Services team about backup and data resilience.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=2">
+<script src="https://www.google.com/recaptcha/api.js?render=6LdvTxsuAAAAAE9ZewgWjenP9W2XUGRmscoWSbQl"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="services/index.html">Services</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html" class="btn btn-primary">Contact</a>
+      <a href="../contacto.html" class="lang-link">PT</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="eyebrow">Contact</div>
+    <h1>Let's talk about your backups.</h1>
+    <p style="max-width:640px; margin-top:16px;">Request a free assessment or get your questions answered about any of our services. We respond within 1 business day.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="display:grid; grid-template-columns: 1.3fr 1fr; gap:48px; align-items:start;">
+    <div>
+      <div id="form-success" class="card" style="display:none; border-color:var(--teal); margin-bottom:20px;">
+        <h3 style="color:var(--teal);">Message sent!</h3>
+        <p style="margin-bottom:0;">Thanks for reaching out. Our team will respond within 1 business day.</p>
+      </div>
+      <div id="form-error" class="card" style="display:none; border-color:#dc2626; margin-bottom:20px;">
+        <h3 style="color:#dc2626;">Couldn't send the message</h3>
+        <p style="margin-bottom:0;">There was an error sending your message. Try again or email us directly at <strong>contato@smbservices.com.br</strong>.</p>
+      </div>
+      <form id="contact-form" action="../enviar-contacto.php" method="post">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-field">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company">
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone / WhatsApp</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-field">
+          <label for="service">Service of interest</label>
+          <select id="service" name="service">
+            <option value="">Not sure / need guidance</option>
+            <option value="health-check">Backup Health Check</option>
+            <option value="resilience">Infrastructure Resilience Assessment</option>
+            <option value="ransomware">Ransomware Readiness Assessment</option>
+            <option value="migration">Backup Migration &amp; Implementation</option>
+            <option value="advisory">Managed Backup Advisory</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5"></textarea>
+        </div>
+        <!-- anti-spam field: invisible to people, bots tend to fill it in -->
+        <div style="position:absolute; left:-9999px;" aria-hidden="true">
+          <label for="website">Leave blank</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <!-- timestamp: used server-side to detect instant bot submissions -->
+        <input type="hidden" id="loaded_at" name="loaded_at" value="">
+        <!-- filled in automatically by reCAPTCHA v3 before submit -->
+        <input type="hidden" id="recaptcha_token" name="recaptcha_token" value="">
+        <!-- tells the backend to redirect back to the English version -->
+        <input type="hidden" name="idioma" value="en">
+        <button type="submit" id="submit-btn" class="btn btn-primary" style="border:none; cursor:pointer;">Send request →</button>
+        <p style="font-size:12px; color:var(--text-muted-dark); margin-top:12px;">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" style="color:var(--teal);" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" style="color:var(--teal);" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Other channels</h3>
+      <p style="margin-bottom:6px;"><strong>Email:</strong> contato@smbservices.com.br</p>
+      <p style="margin-bottom:6px;"><strong>Phone / WhatsApp:</strong> <em>(to be confirmed)</em></p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>SMB Services</h4>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resilience for your business.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services/index.html">Services</a></li>
+          <li><a href="blog/index.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="faq.html#area-privada">Private area</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SMB Services. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('enviado') === '1') {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('contact-form').reset();
+  } else if (params.get('erro') === '1') {
+    document.getElementById('form-error').style.display = 'block';
+  }
+  document.getElementById('loaded_at').value = Math.floor(Date.now() / 1000);
+
+  var form = document.getElementById('contact-form');
+  var submitBtn = document.getElementById('submit-btn');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    grecaptcha.ready(function () {
+      grecaptcha.execute('6LdvTxsuAAAAAE9ZewgWjenP9W2XUGRmscoWSbQl', { action: 'contact' }).then(function (token) {
+        document.getElementById('recaptcha_token').value = token;
+        form.submit();
+      }).catch(function () {
+        // If reCAPTCHA fails to load, submit anyway; the server decides
+        // whether to accept it (e.g. script blockers in the visitor's browser).
+        form.submit();
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
