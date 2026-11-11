@@ -1,4 +1,6 @@
-AuthType Basic
-AuthName "SMB Services - Area Privada"
-AuthUserFile /home/u902022626/domains/smbservices.com.br/public_html/area-privada/.htpasswd
-Require valid-user
+# A autenticação desta área é feita pelo login.php (sessão PHP com
+# timeout de inatividade), não mais por Basic Auth a nível do servidor.
+# Este ficheiro apenas bloqueia o acesso direto a ficheiros internos.
+<FilesMatch "^(\.htaccess|\.htpasswd|db-secret\.php|auth-secret\.php|procedimentos\.json\.bak)$">
+  Require all denied
+</FilesMatch>

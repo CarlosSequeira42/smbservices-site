@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/sessao.php';
+exigir_autenticacao();
 require __DIR__ . '/procedimentos.php';
 
 $mensagem = '';
@@ -69,6 +71,7 @@ try {
     <a href="../index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
     <nav class="main-nav">
       <a href="index.php">← Voltar à área privada</a>
+      <a href="logout.php" class="btn btn-ghost">Sair</a>
     </nav>
   </div>
 </header>

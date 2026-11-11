@@ -1,4 +1,8 @@
-<?php require __DIR__ . '/procedimentos.php'; ?>
+<?php
+require __DIR__ . '/sessao.php';
+exigir_autenticacao();
+require __DIR__ . '/procedimentos.php';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -20,6 +24,7 @@
     <nav class="main-nav">
       <a href="../faq.html">← Voltar à FAQ pública</a>
       <a href="editar.php" class="btn btn-primary">Editar conteúdo</a>
+      <a href="logout.php" class="btn btn-ghost">Sair</a>
     </nav>
   </div>
 </header>
@@ -83,7 +88,7 @@
     }
     ?>
 
-    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página está protegida por autenticação (utilizador e senha) a nível do servidor. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
+    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página exige login e a sessão encerra automaticamente após um período de inatividade. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
     <?php endif; ?>
   </div>
 </section>
