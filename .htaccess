@@ -1,4 +1,4 @@
 # Bloqueia o acesso direto a ficheiros internos do site.
-<FilesMatch "^(\.htaccess|\.htpasswd|\.contacto-limite\.json)$">
+<FilesMatch "^(\.htaccess|\.htpasswd|\.contacto-limite\.json|recaptcha-secret\.php)$">
   Require all denied
 </FilesMatch>
