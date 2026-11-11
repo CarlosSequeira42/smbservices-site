@@ -73,6 +73,8 @@ nav.main-nav a {
   transition: color .15s;
 }
 nav.main-nav a:hover, nav.main-nav a.active { color: var(--text-light); }
+nav.main-nav a.btn-primary, nav.main-nav a.btn-primary:hover { color: var(--navy); }
+nav.main-nav a.btn-ghost, nav.main-nav a.btn-ghost:hover { color: var(--text-light); }
 .btn {
   display: inline-block;
   padding: 10px 20px;
