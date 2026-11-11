@@ -15,6 +15,19 @@ require __DIR__ . '/procedimentos.php';
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css?v=2">
+<style>
+  .area-privada-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 340px);
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .area-privada-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -63,10 +76,10 @@ require __DIR__ . '/procedimentos.php';
       </div>
     <?php else: ?>
 
-    <div style="display:flex; gap:32px; align-items:flex-start; flex-wrap:wrap-reverse;">
+    <div class="area-privada-layout">
 
       <!-- Painel principal: apenas o procedimento em foco -->
-      <div style="flex:2 1 460px; min-width:0;">
+      <div style="min-width:0;">
         <?php if ($destaque): ?>
           <?php if ($verId !== null): ?>
             <p style="margin-bottom:12px; font-size:13px;"><a href="index.php<?php echo $busca !== '' ? '?busca=' . urlencode($busca) : ''; ?>">← Ver o mais recente</a></p>
@@ -84,7 +97,7 @@ require __DIR__ . '/procedimentos.php';
       </div>
 
       <!-- Barra lateral: pesquisa e categorias -->
-      <div style="flex:1 1 280px; min-width:260px; max-width:340px;">
+      <div style="min-width:0;">
         <form method="get" action="index.php" style="display:flex; gap:8px; margin-bottom:20px;">
           <input type="text" name="busca" placeholder="Pesquisar…" value="<?php echo htmlspecialchars($busca); ?>" style="flex:1; padding:8px 12px; border:1px solid var(--border-light); border-radius:8px; font-size:14px;">
           <button type="submit" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 12px;">Ir</button>
