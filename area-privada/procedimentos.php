@@ -8,15 +8,16 @@
  */
 
 define('CATEGORIAS', [
-    'sistema-operativo' => 'Sistema Operativo',
     'armazenamento'     => 'Armazenamento',
-    'cloud'             => 'Cloud',
-    'backup'            => 'Backup',
-    'redes'             => 'Redes',
-    'devops'            => 'DevOps',
     'automacao'         => 'Automação',
-    'ia'                => 'IA',
+    'backup'            => 'Backup',
+    'cloud'             => 'Cloud',
+    'devops'            => 'DevOps',
     'hardware'          => 'Hardware',
+    'ia'                => 'IA',
+    'redes'             => 'Redes',
+    'seguranca'         => 'Segurança',
+    'sistema-operativo' => 'Sistema Operativo',
     'outros'            => 'Outros',
 ]);
 
