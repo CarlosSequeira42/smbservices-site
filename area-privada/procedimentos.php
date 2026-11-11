@@ -62,11 +62,18 @@ function garantir_schema($pdo) {
             categoria VARCHAR(40) NOT NULL DEFAULT 'outros',
             titulo VARCHAR(255) NOT NULL,
             conteudo MEDIUMTEXT,
+            favorito TINYINT(1) NOT NULL DEFAULT 0,
             criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
             atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             INDEX idx_categoria (categoria)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
     );
+
+    // Compatibilidade com tabelas criadas antes do campo "favorito" existir.
+    $coluna = $pdo->query("SHOW COLUMNS FROM procedimentos LIKE 'favorito'")->fetch();
+    if (!$coluna) {
+        $pdo->exec('ALTER TABLE procedimentos ADD COLUMN favorito TINYINT(1) NOT NULL DEFAULT 0');
+    }
 }
 
 function migrar_json_se_necessario($pdo) {
@@ -119,14 +126,20 @@ function listar_procedimentos($busca = null) {
 
     $linhas = $stmt->fetchAll();
     foreach ($linhas as &$p) {
-        $p['id'] = (string) $p['id'];
-        if (!isset(CATEGORIAS[$p['categoria']])) {
-            $p['categoria'] = 'outros';
-        }
+        $p = normalizar_procedimento($p);
     }
     unset($p);
 
     return $linhas;
+}
+
+function normalizar_procedimento($p) {
+    $p['id'] = (string) $p['id'];
+    $p['favorito'] = !empty($p['favorito']);
+    if (!isset(CATEGORIAS[$p['categoria']])) {
+        $p['categoria'] = 'outros';
+    }
+    return $p;
 }
 
 function obter_procedimento($id) {
@@ -134,13 +147,7 @@ function obter_procedimento($id) {
     $stmt = $pdo->prepare('SELECT * FROM procedimentos WHERE id = :id');
     $stmt->execute(['id' => $id]);
     $p = $stmt->fetch();
-    if ($p) {
-        $p['id'] = (string) $p['id'];
-        if (!isset(CATEGORIAS[$p['categoria']])) {
-            $p['categoria'] = 'outros';
-        }
-    }
-    return $p ?: null;
+    return $p ? normalizar_procedimento($p) : null;
 }
 
 /**
@@ -150,13 +157,30 @@ function ultimo_procedimento() {
     $pdo = conectar_bd();
     $stmt = $pdo->query('SELECT * FROM procedimentos ORDER BY id DESC LIMIT 1');
     $p = $stmt->fetch();
-    if ($p) {
-        $p['id'] = (string) $p['id'];
-        if (!isset(CATEGORIAS[$p['categoria']])) {
-            $p['categoria'] = 'outros';
-        }
+    return $p ? normalizar_procedimento($p) : null;
+}
+
+/**
+ * Lista os procedimentos marcados como favoritos, mais recentes primeiro.
+ */
+function listar_favoritos() {
+    $pdo = conectar_bd();
+    $stmt = $pdo->query('SELECT * FROM procedimentos WHERE favorito = 1 ORDER BY atualizado_em DESC, id DESC');
+    $linhas = $stmt->fetchAll();
+    foreach ($linhas as &$p) {
+        $p = normalizar_procedimento($p);
     }
-    return $p ?: null;
+    unset($p);
+    return $linhas;
+}
+
+/**
+ * Liga/desliga o estado de favorito de um procedimento.
+ */
+function alternar_favorito($id) {
+    $pdo = conectar_bd();
+    $stmt = $pdo->prepare('UPDATE procedimentos SET favorito = NOT favorito WHERE id = :id');
+    $stmt->execute(['id' => $id]);
 }
 
 function agrupar_por_categoria($procedimentos) {
