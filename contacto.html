@@ -38,7 +38,15 @@
 <section class="section">
   <div class="container" style="display:grid; grid-template-columns: 1.3fr 1fr; gap:48px; align-items:start;">
     <div>
-      <form id="contact-form" action="#" method="post">
+      <div id="form-success" class="card" style="display:none; border-color:var(--teal); margin-bottom:20px;">
+        <h3 style="color:var(--teal);">Mensagem enviada!</h3>
+        <p style="margin-bottom:0;">Obrigado pelo contacto. A nossa equipa responde em até 1 dia útil.</p>
+      </div>
+      <div id="form-error" class="card" style="display:none; border-color:#dc2626; margin-bottom:20px;">
+        <h3 style="color:#dc2626;">Não foi possível enviar</h3>
+        <p style="margin-bottom:0;">Ocorreu um erro ao enviar a mensagem. Tenta novamente ou escreve directamente para <strong>contato@smbservices.com.br</strong>.</p>
+      </div>
+      <form id="contact-form" action="enviar-contacto.php" method="post">
         <div class="form-field">
           <label for="name">Nome</label>
           <input type="text" id="name" name="name" required>
@@ -70,15 +78,18 @@
           <label for="message">Mensagem</label>
           <textarea id="message" name="message" rows="5"></textarea>
         </div>
+        <!-- campo anti-spam: invisível para pessoas, bots costumam preencher -->
+        <div style="position:absolute; left:-9999px;" aria-hidden="true">
+          <label for="website">Não preencher</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
         <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Enviar pedido →</button>
-        <p id="form-note" style="font-size:13px; color:var(--text-muted-dark); margin-top:14px;"><em>(A confirmar: ligar este formulário a um serviço de envio de e-mail — este site é estático e ainda não tem backend configurado.)</em></p>
       </form>
     </div>
     <div class="card">
       <h3>Outros canais</h3>
-      <p style="margin-bottom:6px;"><strong>E-mail:</strong> <em>(a confirmar)</em></p>
+      <p style="margin-bottom:6px;"><strong>E-mail:</strong> contato@smbservices.com.br</p>
       <p style="margin-bottom:6px;"><strong>Telefone / WhatsApp:</strong> <em>(a confirmar)</em></p>
-      <p><strong>Localização:</strong> Rio de Janeiro, Brasil</p>
     </div>
   </div>
 </section>
@@ -88,7 +99,7 @@
     <div class="footer-grid">
       <div>
         <h4>SMB Services</h4>
-        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para o seu negócio. Rio de Janeiro, Brasil.</p>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para o seu negócio.</p>
       </div>
       <div>
         <h4>Navegação</h4>
@@ -110,16 +121,20 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 SMB Services. Todos os direitos reservados.</span>
-      <span>Rio de Janeiro, Brasil</span>
     </div>
   </div>
 </footer>
 
 <script>
-document.getElementById('contact-form').addEventListener('submit', function(e){
-  e.preventDefault();
-  alert('Obrigado pelo contacto! O envio deste formulário ainda não está ligado a um e-mail — a equipa SMB Services irá configurar isto em breve.');
-});
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('enviado') === '1') {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('contact-form').reset();
+  } else if (params.get('erro') === '1') {
+    document.getElementById('form-error').style.display = 'block';
+  }
+})();
 </script>
 
 </body>
