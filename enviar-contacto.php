@@ -1,9 +1,24 @@
 <?php
 /**
  * SMB Services - processa o formulário de contacto e envia por e-mail
- * para contato@smbservices.com.br, usando o envio local do servidor
- * (mail()), sem necessidade de senha de SMTP.
+ * para contato@smbservices.com.br.
+ *
+ * Usa SMTP autenticado (via PHPMailer, incluído em vendor/phpmailer) em
+ * vez da função mail() do PHP: o envio autenticado é assinado/validado
+ * corretamente pelo servidor da Hostinger, o que evita que as mensagens
+ * caiam na pasta de spam (problema observado com mail() simples quando
+ * o campo "Responder a" tinha um endereço de outro domínio, ex. Hotmail).
+ *
+ * As credenciais SMTP vivem apenas no servidor, em smtp-secret.php
+ * (nunca commitado no Git — já está no .gitignore).
  */
+
+require __DIR__ . '/vendor/phpmailer/Exception.php';
+require __DIR__ . '/vendor/phpmailer/PHPMailer.php';
+require __DIR__ . '/vendor/phpmailer/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 $destino = 'contato@smbservices.com.br';
 $siteUrl = 'https://smbservices.com.br';
@@ -153,10 +168,44 @@ $corpo .= "Telefone / WhatsApp: " . ($telefone !== '' ? $telefone : '-') . "\n";
 $corpo .= "Serviço de interesse: {$servicoLabel}\n\n";
 $corpo .= "Mensagem:\n" . $mensagem . "\n";
 
-$headers  = "From: Site SMB Services <{$destino}>\r\n";
-$headers .= "Reply-To: {$nome} <{$email}>\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+// Credenciais SMTP (smtp-secret.php, criado manualmente no servidor):
+// return ['host' => 'smtp.hostinger.com', 'port' => 465, 'username' => 'contato@smbservices.com.br', 'password' => '...'];
+$smtpConfigPath = __DIR__ . '/smtp-secret.php';
+$enviado = false;
 
-$enviado = mail($destino, $assunto, $corpo, $headers);
+if (file_exists($smtpConfigPath)) {
+    $smtpConfig = include $smtpConfigPath;
+
+    try {
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host       = $smtpConfig['host'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $smtpConfig['username'];
+        $mail->Password   = $smtpConfig['password'];
+        $mail->SMTPSecure = ((int) $smtpConfig['port'] === 587) ? PHPMailer::ENCRYPTION_STARTTLS : PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = (int) $smtpConfig['port'];
+        $mail->CharSet    = 'UTF-8';
+
+        $mail->setFrom($smtpConfig['username'], 'Site SMB Services');
+        $mail->addAddress($destino);
+        $mail->addReplyTo($email, $nome);
+        $mail->Subject = $assunto;
+        $mail->Body    = $corpo;
+
+        $mail->send();
+        $enviado = true;
+    } catch (PHPMailerException $e) {
+        $enviado = false;
+    }
+} else {
+    // Modo de reserva (sem credenciais SMTP ainda configuradas): usa a
+    // função mail() nativa do PHP. Menos confiável para entrega, mas
+    // mantém o formulário a funcionar enquanto o SMTP não é configurado.
+    $headers  = "From: Site SMB Services <{$destino}>\r\n";
+    $headers .= "Reply-To: {$nome} <{$email}>\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $enviado = mail($destino, $assunto, $corpo, $headers);
+}
 
 voltar($enviado ? 'enviado' : 'erro');
