@@ -143,6 +143,22 @@ function obter_procedimento($id) {
     return $p ?: null;
 }
 
+/**
+ * Devolve o procedimento adicionado mais recentemente (maior id).
+ */
+function ultimo_procedimento() {
+    $pdo = conectar_bd();
+    $stmt = $pdo->query('SELECT * FROM procedimentos ORDER BY id DESC LIMIT 1');
+    $p = $stmt->fetch();
+    if ($p) {
+        $p['id'] = (string) $p['id'];
+        if (!isset(CATEGORIAS[$p['categoria']])) {
+            $p['categoria'] = 'outros';
+        }
+    }
+    return $p ?: null;
+}
+
 function agrupar_por_categoria($procedimentos) {
     $grupos = [];
     foreach (CATEGORIAS as $chave => $nome) {

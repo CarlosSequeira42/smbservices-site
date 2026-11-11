@@ -38,18 +38,23 @@ require __DIR__ . '/procedimentos.php';
 </section>
 
 <section class="section">
-  <div class="container" style="max-width:720px;">
+  <div class="container" style="max-width:1100px;">
 
     <?php
     $erroConfig = null;
     try {
         $busca = isset($_GET['busca']) ? trim($_GET['busca']) : '';
-        $procedimentos = listar_procedimentos($busca !== '' ? $busca : null);
+        $todos = listar_procedimentos($busca !== '' ? $busca : null);
+        $verId = isset($_GET['ver']) ? $_GET['ver'] : null;
+        $destaque = $verId !== null ? obter_procedimento($verId) : ultimo_procedimento();
     } catch (Throwable $e) {
         $erroConfig = $e->getMessage();
-        $procedimentos = [];
+        $todos = [];
+        $destaque = null;
         $busca = '';
+        $verId = null;
     }
+    $sufixoBusca = $busca !== '' ? '&busca=' . urlencode($busca) : '';
     ?>
 
     <?php if ($erroConfig): ?>
@@ -58,37 +63,60 @@ require __DIR__ . '/procedimentos.php';
       </div>
     <?php else: ?>
 
-    <form method="get" action="index.php" style="display:flex; gap:10px; margin-bottom:24px;">
-      <input type="text" name="busca" placeholder="Pesquisar por título ou conteúdo…" value="<?php echo htmlspecialchars($busca); ?>" style="flex:1; padding:10px 14px; border:1px solid var(--border-light); border-radius:8px;">
-      <button type="submit" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Pesquisar</button>
-      <?php if ($busca !== ''): ?>
-        <a href="index.php" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Limpar</a>
-      <?php endif; ?>
-    </form>
+    <div style="display:flex; gap:32px; align-items:flex-start; flex-wrap:wrap-reverse;">
 
-    <?php
-    if (empty($procedimentos)) {
-        echo '<p><em>' . ($busca !== '' ? 'Nenhum procedimento encontrado para esta pesquisa.' : 'Ainda não há procedimentos cadastrados.') . '</em></p>';
-    }
-    $grupos = agrupar_por_categoria($procedimentos);
-    $primeiro = true;
-    foreach (CATEGORIAS as $chave => $nome) {
-        if (empty($grupos[$chave])) {
-            continue;
-        }
-        echo '<h2 style="margin:' . ($primeiro ? '0' : '32px') . ' 0 12px; font-size:20px;">' . htmlspecialchars($nome) . '</h2>';
-        foreach ($grupos[$chave] as $p) {
-            $aberto = $primeiro ? ' open' : '';
-            echo '<details class="faq-item"' . $aberto . '>';
-            echo '<summary>' . htmlspecialchars($p['titulo']) . '</summary>';
-            echo '<div style="white-space:pre-wrap;">' . htmlspecialchars($p['conteudo']) . '</div>';
-            echo '</details>';
-            $primeiro = false;
-        }
-    }
-    ?>
+      <!-- Painel principal: apenas o procedimento em foco -->
+      <div style="flex:2 1 460px; min-width:0;">
+        <?php if ($destaque): ?>
+          <?php if ($verId !== null): ?>
+            <p style="margin-bottom:12px; font-size:13px;"><a href="index.php<?php echo $busca !== '' ? '?busca=' . urlencode($busca) : ''; ?>">← Ver o mais recente</a></p>
+          <?php else: ?>
+            <div class="eyebrow" style="margin-bottom:10px;">Mais recente</div>
+          <?php endif; ?>
+          <div class="card">
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$destaque['categoria']]); ?></div>
+            <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($destaque['titulo']); ?></h2>
+            <div style="white-space:pre-wrap; font-size:15px; line-height:1.6;"><?php echo htmlspecialchars($destaque['conteudo']); ?></div>
+          </div>
+        <?php else: ?>
+          <p><em><?php echo $busca !== '' ? 'Nenhum procedimento encontrado para esta pesquisa.' : 'Ainda não há procedimentos cadastrados.'; ?></em></p>
+        <?php endif; ?>
+      </div>
 
-    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página exige login e a sessão encerra automaticamente após um período de inatividade. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
+      <!-- Barra lateral: pesquisa e categorias -->
+      <div style="flex:1 1 280px; min-width:260px; max-width:340px;">
+        <form method="get" action="index.php" style="display:flex; gap:8px; margin-bottom:20px;">
+          <input type="text" name="busca" placeholder="Pesquisar…" value="<?php echo htmlspecialchars($busca); ?>" style="flex:1; padding:8px 12px; border:1px solid var(--border-light); border-radius:8px; font-size:14px;">
+          <button type="submit" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 12px;">Ir</button>
+        </form>
+        <?php if ($busca !== ''): ?>
+          <p style="margin:-12px 0 16px;"><a href="index.php" style="font-size:12px;">Limpar pesquisa</a></p>
+        <?php endif; ?>
+
+        <?php $grupos = agrupar_por_categoria($todos); ?>
+        <?php foreach (CATEGORIAS as $chave => $nome): ?>
+          <?php if (empty($grupos[$chave])) continue; ?>
+          <div class="card" style="margin-bottom:14px; padding:16px;">
+            <h4 style="margin-bottom:10px; font-size:14px;"><?php echo htmlspecialchars($nome); ?> <span style="color:var(--text-muted-dark); font-weight:400;">(<?php echo count($grupos[$chave]); ?>)</span></h4>
+            <div style="max-height:180px; overflow-y:auto;">
+              <ul style="list-style:none; margin:0; padding:0;">
+                <?php foreach ($grupos[$chave] as $p): ?>
+                  <?php $ativo = $destaque && $destaque['id'] === $p['id']; ?>
+                  <li style="margin-bottom:8px;">
+                    <a href="index.php?ver=<?php echo urlencode($p['id']) . $sufixoBusca; ?>" style="font-size:13px; display:block; <?php echo $ativo ? 'font-weight:700; color:var(--navy);' : 'color:var(--text-dark);'; ?>">
+                      <?php echo htmlspecialchars($p['titulo']); ?>
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+    </div>
+
+    <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:32px;">Esta página exige login e a sessão encerra automaticamente após um período de inatividade. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
     <?php endif; ?>
   </div>
 </section>
