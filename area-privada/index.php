@@ -36,9 +36,34 @@
   <div class="container" style="max-width:720px;">
 
     <?php
-    $procedimentos = listar_procedimentos();
+    $erroConfig = null;
+    try {
+        $busca = isset($_GET['busca']) ? trim($_GET['busca']) : '';
+        $procedimentos = listar_procedimentos($busca !== '' ? $busca : null);
+    } catch (Throwable $e) {
+        $erroConfig = $e->getMessage();
+        $procedimentos = [];
+        $busca = '';
+    }
+    ?>
+
+    <?php if ($erroConfig): ?>
+      <div class="card" style="border-color:#dc2626; margin-bottom:24px;">
+        <p style="margin-bottom:0;"><strong>Configuração pendente:</strong> <?php echo htmlspecialchars($erroConfig); ?></p>
+      </div>
+    <?php else: ?>
+
+    <form method="get" action="index.php" style="display:flex; gap:10px; margin-bottom:24px;">
+      <input type="text" name="busca" placeholder="Pesquisar por título ou conteúdo…" value="<?php echo htmlspecialchars($busca); ?>" style="flex:1; padding:10px 14px; border:1px solid var(--border-light); border-radius:8px;">
+      <button type="submit" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Pesquisar</button>
+      <?php if ($busca !== ''): ?>
+        <a href="index.php" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Limpar</a>
+      <?php endif; ?>
+    </form>
+
+    <?php
     if (empty($procedimentos)) {
-        echo '<p><em>Ainda não há procedimentos cadastrados.</em></p>';
+        echo '<p><em>' . ($busca !== '' ? 'Nenhum procedimento encontrado para esta pesquisa.' : 'Ainda não há procedimentos cadastrados.') . '</em></p>';
     }
     $grupos = agrupar_por_categoria($procedimentos);
     $primeiro = true;
@@ -59,6 +84,7 @@
     ?>
 
     <p style="font-size:13px; color:var(--text-muted-dark); font-style:italic; margin-top:24px;">Esta página está protegida por autenticação (utilizador e senha) a nível do servidor. Use o botão "Editar conteúdo" acima para adicionar, alterar ou remover procedimentos.</p>
+    <?php endif; ?>
   </div>
 </section>
 

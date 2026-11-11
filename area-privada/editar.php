@@ -3,70 +3,50 @@ require __DIR__ . '/procedimentos.php';
 
 $mensagem = '';
 $editando = null;
+$erroConfig = null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $acao = isset($_POST['acao']) ? $_POST['acao'] : '';
-    $procedimentos = listar_procedimentos();
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $acao = isset($_POST['acao']) ? $_POST['acao'] : '';
 
-    if ($acao === 'adicionar') {
-        $titulo = trim($_POST['titulo'] ?? '');
-        $conteudo = trim($_POST['conteudo'] ?? '');
-        $categoria = $_POST['categoria'] ?? '';
-        if (!isset(CATEGORIAS[$categoria])) {
-            $categoria = 'outros';
-        }
-        if ($titulo !== '') {
-            $procedimentos[] = [
-                'id' => novo_id($procedimentos),
-                'categoria' => $categoria,
-                'titulo' => $titulo,
-                'conteudo' => $conteudo,
-            ];
-            guardar_procedimentos($procedimentos);
-            $mensagem = 'Procedimento adicionado.';
-        } else {
-            $mensagem = 'O título é obrigatório.';
-        }
-    } elseif ($acao === 'atualizar') {
-        $id = $_POST['id'] ?? '';
-        $titulo = trim($_POST['titulo'] ?? '');
-        $conteudo = trim($_POST['conteudo'] ?? '');
-        $categoria = $_POST['categoria'] ?? '';
-        if (!isset(CATEGORIAS[$categoria])) {
-            $categoria = 'outros';
-        }
-        foreach ($procedimentos as &$p) {
-            if ($p['id'] === $id) {
-                $p['titulo'] = $titulo;
-                $p['conteudo'] = $conteudo;
-                $p['categoria'] = $categoria;
-                break;
+        if ($acao === 'adicionar') {
+            $titulo = trim($_POST['titulo'] ?? '');
+            $conteudo = trim($_POST['conteudo'] ?? '');
+            $categoria = $_POST['categoria'] ?? '';
+            if ($titulo !== '') {
+                inserir_procedimento($titulo, $categoria, $conteudo);
+                $mensagem = 'Procedimento adicionado.';
+            } else {
+                $mensagem = 'O título é obrigatório.';
             }
+        } elseif ($acao === 'atualizar') {
+            $id = $_POST['id'] ?? '';
+            $titulo = trim($_POST['titulo'] ?? '');
+            $conteudo = trim($_POST['conteudo'] ?? '');
+            $categoria = $_POST['categoria'] ?? '';
+            atualizar_procedimento($id, $titulo, $categoria, $conteudo);
+            $mensagem = 'Procedimento atualizado.';
+        } elseif ($acao === 'remover') {
+            $id = $_POST['id'] ?? '';
+            remover_procedimento($id);
+            $mensagem = 'Procedimento removido.';
         }
-        unset($p);
-        guardar_procedimentos($procedimentos);
-        $mensagem = 'Procedimento atualizado.';
-    } elseif ($acao === 'remover') {
-        $id = $_POST['id'] ?? '';
-        $procedimentos = array_values(array_filter($procedimentos, function ($p) use ($id) {
-            return $p['id'] !== $id;
-        }));
-        guardar_procedimentos($procedimentos);
-        $mensagem = 'Procedimento removido.';
+
+        header('Location: editar.php?msg=' . urlencode($mensagem));
+        exit;
     }
 
-    header('Location: editar.php?msg=' . urlencode($mensagem));
-    exit;
-}
-
-$procedimentos = listar_procedimentos();
-$mensagem = isset($_GET['msg']) ? $_GET['msg'] : '';
-$idEditar = isset($_GET['editar']) ? $_GET['editar'] : null;
-foreach ($procedimentos as $p) {
-    if ($idEditar !== null && $p['id'] === $idEditar) {
-        $editando = $p;
-        break;
+    $busca = isset($_GET['busca']) ? trim($_GET['busca']) : '';
+    $procedimentos = listar_procedimentos($busca !== '' ? $busca : null);
+    $mensagem = isset($_GET['msg']) ? $_GET['msg'] : '';
+    $idEditar = isset($_GET['editar']) ? $_GET['editar'] : null;
+    if ($idEditar !== null) {
+        $editando = obter_procedimento($idEditar);
     }
+} catch (Throwable $e) {
+    $erroConfig = $e->getMessage();
+    $procedimentos = [];
+    $busca = '';
 }
 ?>
 <!DOCTYPE html>
@@ -103,12 +83,19 @@ foreach ($procedimentos as $p) {
 <section class="section">
   <div class="container" style="max-width:720px;">
 
-    <?php if ($mensagem): ?>
+    <?php if ($erroConfig): ?>
+      <div class="card" style="border-color:#dc2626; margin-bottom:24px;">
+        <p style="margin-bottom:0;"><strong>Configuração pendente:</strong> <?php echo htmlspecialchars($erroConfig); ?></p>
+      </div>
+    <?php endif; ?>
+
+    <?php if ($mensagem && !$erroConfig): ?>
       <div class="card" style="border-color:var(--teal); margin-bottom:24px;">
         <p style="margin-bottom:0;"><?php echo htmlspecialchars($mensagem); ?></p>
       </div>
     <?php endif; ?>
 
+    <?php if (!$erroConfig): ?>
     <div class="card" style="margin-bottom:32px;">
       <h3><?php echo $editando ? 'Editar procedimento' : 'Adicionar novo procedimento'; ?></h3>
       <form method="post" action="editar.php">
@@ -140,8 +127,16 @@ foreach ($procedimentos as $p) {
     </div>
 
     <h3>Procedimentos existentes</h3>
+    <form method="get" action="editar.php" style="display:flex; gap:10px; margin-bottom:20px;">
+      <input type="text" name="busca" placeholder="Pesquisar por título ou conteúdo…" value="<?php echo htmlspecialchars($busca); ?>" style="flex:1; padding:10px 14px; border:1px solid var(--border-light); border-radius:8px;">
+      <button type="submit" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Pesquisar</button>
+      <?php if ($busca !== ''): ?>
+        <a href="editar.php" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark);">Limpar</a>
+      <?php endif; ?>
+    </form>
+
     <?php if (empty($procedimentos)): ?>
-      <p><em>Ainda não há procedimentos cadastrados.</em></p>
+      <p><em><?php echo $busca !== '' ? 'Nenhum procedimento encontrado para esta pesquisa.' : 'Ainda não há procedimentos cadastrados.'; ?></em></p>
     <?php endif; ?>
     <?php $grupos = agrupar_por_categoria($procedimentos); ?>
     <?php foreach (CATEGORIAS as $chave => $nome): ?>
@@ -162,6 +157,7 @@ foreach ($procedimentos as $p) {
         </div>
       <?php endforeach; ?>
     <?php endforeach; ?>
+    <?php endif; ?>
 
   </div>
 </section>
