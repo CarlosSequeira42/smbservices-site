@@ -1,3 +1,9 @@
+# Redireciona www -> sem www, para consolidar tudo numa única versão
+# canónica (importante para SEO e para o Google Analytics).
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.smbservices\.com\.br$ [NC]
+RewriteRule ^(.*)$ https://smbservices.com.br/$1 [L,R=301]
+
 # Bloqueia o acesso direto a ficheiros internos do site.
 <FilesMatch "^(\.htaccess|\.htpasswd|\.contacto-limite\.json|recaptcha-secret\.php)$">
   Require all denied
