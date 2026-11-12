@@ -44,6 +44,7 @@ header.site-header {
   align-items: center;
   justify-content: space-between;
   height: 76px;
+  position: relative;
 }
 .logo {
   display: flex;
@@ -299,8 +300,54 @@ details.faq-item p { margin-top: 12px; color: #334155; }
 .form-field input:focus, .form-field textarea:focus { outline: 2px solid var(--cyan); border-color: transparent; }
 
 /* Mobile nav toggle (simple) */
-.nav-toggle { display: none; }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-light);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 @media (max-width: 860px) {
-  nav.main-nav { display: none; }
+  .nav-toggle { display: flex; }
+  nav.main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--navy);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 24px 24px;
+    gap: 2px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  }
+  nav.main-nav.is-open { display: flex; }
+  nav.main-nav a { padding: 12px 0; border-bottom: 1px solid rgba(241,245,249,0.08); }
+  nav.main-nav a.btn-primary, nav.main-nav a.lang-link {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 10px;
+    border-bottom: none;
+  }
   h1 { font-size: 32px; }
 }
