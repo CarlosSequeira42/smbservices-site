@@ -212,6 +212,31 @@ p { margin-bottom: 14px; color: #334155; }
   margin-bottom: 10px;
 }
 
+/* Stats band */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+.stat-item {
+  text-align: center;
+  padding: 24px 16px;
+}
+.stat-number {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1.1;
+}
+.stat-label {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-muted-dark);
+  line-height: 1.5;
+}
+.section-dark .stat-label { color: var(--text-muted-light); }
+
 /* CTA band */
 .cta-band {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
