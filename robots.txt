@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /area-privada/
+Disallow: /vendor/
+Disallow: /*.php$
+
+Sitemap: https://smbservices.com.br/sitemap.xml
