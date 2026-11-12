@@ -437,3 +437,13 @@ details.faq-item p { margin-top: 12px; color: #334155; }
   }
   h1 { font-size: 32px; }
 }
+
+/* RAID calculator */
+.raid-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+@media (max-width: 640px) {
+  .raid-grid-2 { grid-template-columns: 1fr; }
+}

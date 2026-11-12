@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora RAID | SMB Services</title>
+<meta name="description" content="Calcula capacidade útil, eficiência e tolerância a falhas para RAID 0, 1, 5, 6, 10, 0+1, 50, 60 e JBOD, com vantagens e limitações de cada nível.">
+<link rel="canonical" href="https://smbservices.com.br/ferramentas/calculadora-raid.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SMB Services">
+<meta property="og:title" content="Calculadora RAID | SMB Services">
+<meta property="og:description" content="Calcula capacidade útil, eficiência e tolerância a falhas para RAID 0, 1, 5, 6, 10, 0+1, 50, 60 e JBOD, com vantagens e limitações de cada nível.">
+<meta property="og:url" content="https://smbservices.com.br/ferramentas/calculadora-raid.html">
+<meta property="og:image" content="https://smbservices.com.br/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculadora RAID | SMB Services">
+<meta name="twitter:description" content="Calcula capacidade útil, eficiência e tolerância a falhas para RAID 0, 1, 5, 6, 10, 0+1, 50, 60 e JBOD, com vantagens e limitações de cada nível.">
+<meta name="twitter:image" content="https://smbservices.com.br/img/og-image.png">
+<meta name="google-site-verification" content="DhuicQ_pXtCedmEEm8h_g_2g42nhBX6dzi93ZWqp2Cg">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=7">
+<script src="../js/cookie-consent.js" defer></script>
+<script src="../js/nav-toggle.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
+    <nav class="main-nav">
+      <a href="../index.html">Início</a>
+      <a href="../sobre.html">Sobre Nós</a>
+      <a href="../servicos/index.html">Serviços</a>
+      <a href="index.html" class="active">Ferramentas</a>
+      <a href="../blog/index.html">Blog</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="../contacto.html" class="btn btn-primary">Contato</a>
+      <a href="../en/tools/raid-calculator.html" class="lang-link">EN</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Ferramentas</a> / Calculadora RAID</div>
+    <div class="eyebrow">Armazenamento</div>
+    <h1>Calculadora RAID</h1>
+    <p style="max-width:640px; margin-top:16px;">Indica o número de discos, a capacidade de cada um e o nível RAID para ver a capacidade útil, a eficiência e a tolerância a falhas.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form id="raid-form" class="raid-grid-2" style="max-width:720px; margin:0 auto 8px;">
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="disk-count">Número de discos</label>
+        <input type="number" id="disk-count" min="1" max="48" value="4" step="1">
+      </div>
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="disk-capacity">Capacidade por disco (TB)</label>
+        <input type="number" id="disk-capacity" min="0.1" max="100" value="4" step="0.1">
+      </div>
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="disk-type">Tipo de disco</label>
+        <select id="disk-type">
+          <option value="hdd">HDD</option>
+          <option value="ssd">SSD</option>
+          <option value="nvme">NVMe</option>
+        </select>
+      </div>
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="raid-level">Nível RAID</label>
+        <select id="raid-level">
+          <option value="raid0">RAID 0 (Striping)</option>
+          <option value="raid1">RAID 1 (Espelhamento)</option>
+          <option value="raid5" selected>RAID 5 (Paridade distribuída)</option>
+          <option value="raid6">RAID 6 (Dupla paridade)</option>
+          <option value="raid10">RAID 10 (1+0)</option>
+          <option value="raid01">RAID 0+1</option>
+          <option value="raid50">RAID 50</option>
+          <option value="raid60">RAID 60</option>
+          <option value="jbod">JBOD</option>
+        </select>
+      </div>
+      <div class="form-field" id="group-field" style="margin-bottom:0; display:none;">
+        <label for="raid-groups">Número de grupos</label>
+        <input type="number" id="raid-groups" min="2" max="8" value="2" step="1">
+      </div>
+    </form>
+
+    <div id="raid-error" style="display:none; max-width:720px; margin:0 auto 24px; padding:14px 18px; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; color:#991b1b; font-size:14px;"></div>
+
+    <div id="raid-results" style="max-width:720px; margin:0 auto;">
+      <div class="stats-combo" style="background:var(--navy); border-radius:var(--radius); padding:28px 24px; margin-top:8px;">
+        <div class="stats-hero">
+          <div class="stats-hero-number" id="res-usable" style="font-size:36px;">—</div>
+          <div class="stats-hero-label">Capacidade útil <span style="opacity:.6;">(bruta: <span id="res-raw">—</span>)</span></div>
+        </div>
+        <div class="stats-divider"></div>
+        <div class="stats-bars" style="gap:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Eficiência</span><strong style="color:var(--text-light);" id="res-efficiency">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Leitura (relativo)</span><strong style="color:var(--cyan); letter-spacing:2px;" id="res-read">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Escrita (relativo)</span><strong style="color:var(--cyan); letter-spacing:2px;" id="res-write">—</strong></div>
+          <div style="font-size:13px; color:var(--text-muted-light); line-height:1.5; margin-top:4px;">Tolerância a falhas: <strong style="color:var(--text-light); font-weight:600;" id="res-fault">—</strong></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px;">
+        <h3 id="res-label">—</h3>
+        <div class="raid-grid-2" style="margin-top:12px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Vantagens</div>
+            <ul id="res-pros" style="padding-left:18px; font-size:14px; color:#334155; line-height:1.6;"></ul>
+          </div>
+          <div>
+            <div style="font-size:13px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Limitações</div>
+            <ul id="res-cons" style="padding-left:18px; font-size:14px; color:#334155; line-height:1.6;"></ul>
+          </div>
+        </div>
+        <p style="margin-top:14px; margin-bottom:0; font-size:14px;"><strong>Indicado para:</strong> <span id="res-ideal"></span></p>
+      </div>
+
+      <p style="font-size:12px; color:var(--text-muted-dark); margin-top:16px; text-align:center;">Valores de desempenho são estimativas indicativas, não medições reais — dependem de controlador, workload e configuração.</p>
+    </div>
+
+    <div style="margin-top:40px; text-align:center;">
+      <p>Precisas de ajuda a escolher ou a implementar a configuração certa?</p>
+      <a href="../contacto.html" class="btn btn-primary">Fale com a gente →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>SMB Services</h4>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para seu negócio.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../sobre.html">Sobre Nós</a></li>
+          <li><a href="../servicos/index.html">Serviços</a></li>
+          <li><a href="index.html">Ferramentas</a></li>
+          <li><a href="../blog/index.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../contacto.html">Contato</a></li>
+          <li><a href="../faq.html#area-privada">Área privada</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SMB Services. Todos os direitos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/raid-calculator.js" defer></script>
+</body>
+</html>

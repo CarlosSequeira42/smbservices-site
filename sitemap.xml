@@ -156,4 +156,32 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://smbservices.com.br/en/contact.html"/>
   </url>
 
+  <url>
+    <loc>https://smbservices.com.br/ferramentas/index.html</loc>
+    <lastmod>2026-11-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://smbservices.com.br/ferramentas/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://smbservices.com.br/en/tools/index.html"/>
+  </url>
+
+  <url>
+    <loc>https://smbservices.com.br/ferramentas/calculadora-raid.html</loc>
+    <lastmod>2026-11-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://smbservices.com.br/ferramentas/calculadora-raid.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://smbservices.com.br/en/tools/raid-calculator.html"/>
+  </url>
+
+  <url>
+    <loc>https://smbservices.com.br/en/tools/index.html</loc>
+    <lastmod>2026-11-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://smbservices.com.br/ferramentas/index.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://smbservices.com.br/en/tools/index.html"/>
+  </url>
+
+  <url>
+    <loc>https://smbservices.com.br/en/tools/raid-calculator.html</loc>
+    <lastmod>2026-11-12</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://smbservices.com.br/ferramentas/calculadora-raid.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://smbservices.com.br/en/tools/raid-calculator.html"/>
+  </url>
+
 </urlset>
