@@ -59,6 +59,24 @@
 <section class="section">
   <div class="container">
     <form id="raid-form" class="raid-grid-2" style="max-width:720px; margin:0 auto 8px;">
+      <div class="form-field" style="margin-bottom:0; grid-column:1 / -1;">
+        <label for="device-preset">Storage/NAS model (optional)</label>
+        <select id="device-preset">
+          <option value="manual" selected>Custom (enter manually)</option>
+          <optgroup label="Enterprise arrays (Gartner Leaders)">
+            <option value="dell-me5012">Dell PowerVault ME5012</option>
+            <option value="dell-me5024">Dell PowerVault ME5024</option>
+            <option value="netapp-fas2720">NetApp FAS2720</option>
+            <option value="hpe-msa2060-sff">HPE MSA 2060 (SFF)</option>
+            <option value="hpe-msa2060-lff">HPE MSA 2060 (LFF)</option>
+          </optgroup>
+          <optgroup label="SMB NAS">
+            <option value="synology-rs3621xs">Synology RS3621xs+</option>
+            <option value="qnap-ts873a">QNAP TS-873A</option>
+          </optgroup>
+        </select>
+        <p id="device-note" style="margin:8px 0 0; font-size:13px; color:var(--text-muted-dark, #64748b); display:none;"></p>
+      </div>
       <div class="form-field" style="margin-bottom:0;">
         <label for="disk-count">Number of disks</label>
         <input type="number" id="disk-count" min="1" max="48" value="4" step="1">

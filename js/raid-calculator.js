@@ -191,6 +191,24 @@
     }
   };
 
+  var DEVICES = isPT ? {
+    'dell-me5012': { bays: 12, note: 'Array Dell PowerVault ME5012 — 12 baias de 3,5", 2U. Suporta discos SAS HDD ou SSD; capacidade por disco típica entre 2 e 20 TB.' },
+    'dell-me5024': { bays: 24, note: 'Array Dell PowerVault ME5024 — 24 baias de 2,5", 2U. Suporta SSD e HDD SAS de pequeno formato; capacidade por disco típica entre 1,92 e 7,68 TB (SSD) ou até 2,4 TB (HDD).' },
+    'netapp-fas2720': { bays: 12, note: 'NetApp FAS2720 — 12 baias, 2U, voltado para médias empresas. Capacidade por disco típica entre 4 e 16 TB.' },
+    'hpe-msa2060-sff': { bays: 24, note: 'HPE MSA 2060 (SFF) — 24 baias de 2,5" SAS-3, 2U. Modelo compacto, comum com discos SSD de 1,92 a 7,68 TB.' },
+    'hpe-msa2060-lff': { bays: 12, note: 'HPE MSA 2060 (LFF) — 12 baias de 3,5" SAS-3, 2U. Comum com discos HDD de 4 a 20 TB.' },
+    'synology-rs3621xs': { bays: 12, note: 'Synology RackStation RS3621xs+ — NAS de 12 baias, 2U, expansível até 36 discos com unidades RX1217(RP). Boa opção de NAS para SMB.' },
+    'qnap-ts873a': { bays: 8, note: 'QNAP TS-873A — NAS torre de 8 baias de 3,5"/2,5". Boa opção de NAS compacto para pequenas e médias empresas.' }
+  } : {
+    'dell-me5012': { bays: 12, note: 'Dell PowerVault ME5012 array — 12 x 3.5" bays, 2U. Supports SAS HDD or SSD; typical per-disk capacity between 2 and 20 TB.' },
+    'dell-me5024': { bays: 24, note: 'Dell PowerVault ME5024 array — 24 x 2.5" bays, 2U. Supports small-form-factor SAS SSD or HDD; typical per-disk capacity between 1.92 and 7.68 TB (SSD) or up to 2.4 TB (HDD).' },
+    'netapp-fas2720': { bays: 12, note: 'NetApp FAS2720 — 12 bays, 2U, aimed at midsize businesses. Typical per-disk capacity between 4 and 16 TB.' },
+    'hpe-msa2060-sff': { bays: 24, note: 'HPE MSA 2060 (SFF) — 24 x 2.5" SAS-3 bays, 2U. Compact model, commonly fitted with 1.92–7.68 TB SSDs.' },
+    'hpe-msa2060-lff': { bays: 12, note: 'HPE MSA 2060 (LFF) — 12 x 3.5" SAS-3 bays, 2U. Commonly fitted with 4–20 TB HDDs.' },
+    'synology-rs3621xs': { bays: 12, note: 'Synology RackStation RS3621xs+ — 12-bay NAS, 2U, expandable up to 36 drives with RX1217(RP) units. A solid SMB NAS option.' },
+    'qnap-ts873a': { bays: 8, note: 'QNAP TS-873A — 8-bay 3.5"/2.5" tower NAS. A good compact NAS option for small and midsize businesses.' }
+  };
+
   function diskTypeBonus(type) {
     if (type === 'ssd') return 1;
     if (type === 'nvme') return 2;
@@ -269,6 +287,22 @@
     document.getElementById('res-ideal').textContent = level.ideal;
   }
 
+  function applyDevicePreset() {
+    var select = document.getElementById('device-preset');
+    var note = document.getElementById('device-note');
+    if (!select) return;
+    var device = DEVICES[select.value];
+    if (!device) {
+      note.style.display = 'none';
+      note.textContent = '';
+      return;
+    }
+    document.getElementById('disk-count').value = device.bays;
+    note.textContent = device.note;
+    note.style.display = 'block';
+    render();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('raid-form');
     if (!form) return;
@@ -276,6 +310,10 @@
       document.getElementById(id).addEventListener('input', render);
       document.getElementById(id).addEventListener('change', render);
     });
+    var devicePreset = document.getElementById('device-preset');
+    if (devicePreset) {
+      devicePreset.addEventListener('change', applyDevicePreset);
+    }
     render();
   });
 })();
