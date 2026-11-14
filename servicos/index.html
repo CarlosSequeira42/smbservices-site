@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=7">
+<link rel="stylesheet" href="../css/style.css?v=8">
 <script src="../js/cookie-consent.js" defer></script>
 <script src="../js/nav-toggle.js" defer></script>
 </head>
@@ -56,36 +56,33 @@
 
 <section class="section">
   <div class="container">
-    <table style="width:100%; border-collapse:collapse;">
-      <thead>
-        <tr style="border-bottom:2px solid var(--border-light); text-align:left;">
-          <th style="padding:14px 12px; font-size:14px; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-muted-dark);">Serviço</th>
-          <th style="padding:14px 12px; font-size:14px; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-muted-dark);">Indicado para</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid var(--border-light);">
-          <td style="padding:16px 12px;"><a href="backup-health-check.html" style="font-weight:700; color:var(--teal);">Backup Health Check</a></td>
-          <td style="padding:16px 12px; color:#334155;">Quem já tem backup, mas nunca validou se funciona de verdade</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border-light);">
-          <td style="padding:16px 12px;"><a href="infrastructure-resilience-assessment.html" style="font-weight:700; color:var(--teal);">Infrastructure Resilience Assessment</a></td>
-          <td style="padding:16px 12px; color:#334155;">Quem quer saber o tempo real de recuperação da infraestrutura</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border-light);">
-          <td style="padding:16px 12px;"><a href="ransomware-readiness-assessment.html" style="font-weight:700; color:var(--teal);">Ransomware Readiness Assessment</a></td>
-          <td style="padding:16px 12px; color:#334155;">Quem quer testar a capacidade de recuperação após um ataque</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border-light);">
-          <td style="padding:16px 12px;"><a href="backup-migration-implementation.html" style="font-weight:700; color:var(--teal);">Backup Migration &amp; Implementation</a></td>
-          <td style="padding:16px 12px; color:#334155;">Quem vai trocar de solução ou implementar backup de raiz</td>
-        </tr>
-        <tr>
-          <td style="padding:16px 12px;"><a href="managed-backup-advisory.html" style="font-weight:700; color:var(--teal);">Managed Backup Advisory</a></td>
-          <td style="padding:16px 12px; color:#334155;">Quem quer um especialista acompanhando a estratégia a longo prazo</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="photo-card-grid">
+      <a href="backup-health-check.html" class="photo-card">
+        <div class="photo-card-img"><img src="../img/servicos/backup-health-check.jpg" alt="Backup Health Check" width="300" height="190" loading="lazy"></div>
+        <h3>Backup Health Check</h3>
+        <p>Quem já tem backup, mas nunca validou se funciona de verdade</p>
+      </a>
+      <a href="infrastructure-resilience-assessment.html" class="photo-card">
+        <div class="photo-card-img"><img src="../img/servicos/infrastructure-resilience-assessment.jpg" alt="Infrastructure Resilience Assessment" width="300" height="190" loading="lazy"></div>
+        <h3>Infrastructure Resilience Assessment</h3>
+        <p>Quem quer saber o tempo real de recuperação da infraestrutura</p>
+      </a>
+      <a href="ransomware-readiness-assessment.html" class="photo-card">
+        <div class="photo-card-img"><img src="../img/servicos/ransomware-readiness-assessment.jpg" alt="Ransomware Readiness Assessment" width="300" height="190" loading="lazy"></div>
+        <h3>Ransomware Readiness Assessment</h3>
+        <p>Quem quer testar a capacidade de recuperação após um ataque</p>
+      </a>
+      <a href="backup-migration-implementation.html" class="photo-card">
+        <div class="photo-card-img"><img src="../img/servicos/backup-migration-implementation.jpg" alt="Backup Migration &amp; Implementation" width="300" height="190" loading="lazy"></div>
+        <h3>Backup Migration &amp; Implementation</h3>
+        <p>Quem vai trocar de solução ou implementar backup de raiz</p>
+      </a>
+      <a href="managed-backup-advisory.html" class="photo-card">
+        <div class="photo-card-img"><img src="../img/servicos/managed-backup-advisory.jpg" alt="Managed Backup Advisory" width="300" height="190" loading="lazy"></div>
+        <h3>Managed Backup Advisory</h3>
+        <p>Quem quer um especialista acompanhando a estratégia a longo prazo</p>
+      </a>
+    </div>
 
     <div style="margin-top:40px; text-align:center;">
       <p>Não sabe por onde começar?</p>
