@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de IP | SMB Services</title>
+<meta name="description" content="Calcula endereço de rede, broadcast, máscara, hosts utilizáveis e classe de IP a partir de um endereço IPv4 e prefixo CIDR.">
+<link rel="canonical" href="https://smbservices.com.br/ferramentas/calculadora-ip.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SMB Services">
+<meta property="og:title" content="Calculadora de IP | SMB Services">
+<meta property="og:description" content="Calcula endereço de rede, broadcast, máscara, hosts utilizáveis e classe de IP a partir de um endereço IPv4 e prefixo CIDR.">
+<meta property="og:url" content="https://smbservices.com.br/ferramentas/calculadora-ip.html">
+<meta property="og:image" content="https://smbservices.com.br/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculadora de IP | SMB Services">
+<meta name="twitter:description" content="Calcula endereço de rede, broadcast, máscara, hosts utilizáveis e classe de IP a partir de um endereço IPv4 e prefixo CIDR.">
+<meta name="twitter:image" content="https://smbservices.com.br/img/og-image.png">
+<meta name="google-site-verification" content="DhuicQ_pXtCedmEEm8h_g_2g42nhBX6dzi93ZWqp2Cg">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=9">
+<script src="../js/cookie-consent.js" defer></script>
+<script src="../js/nav-toggle.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="logo">SMB<span class="dot"></span>SERVICES</a>
+    <nav class="main-nav">
+      <a href="../index.html">Início</a>
+      <a href="../sobre.html">Sobre Nós</a>
+      <a href="../servicos/index.html">Serviços</a>
+      <a href="index.html" class="active">Ferramentas</a>
+      <a href="../blog/index.html">Blog</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="../contacto.html" class="btn btn-primary">Contato</a>
+      <a href="../en/tools/ip-calculator.html" class="lang-link">EN</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Ferramentas</a> / Calculadora de IP</div>
+    <div class="eyebrow">Redes</div>
+    <h1>Calculadora de IP</h1>
+    <p style="max-width:640px; margin-top:16px;">Indica um endereço IPv4 e o prefixo CIDR para ver o endereço de rede, o broadcast, a máscara, a faixa de hosts utilizáveis e a classe do IP.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form id="ip-form" class="raid-grid-2" style="max-width:720px; margin:0 auto 8px;">
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="ip-address">Endereço IPv4</label>
+        <input type="text" id="ip-address" value="192.168.1.10" placeholder="192.168.1.10" inputmode="decimal">
+      </div>
+      <div class="form-field" style="margin-bottom:0;">
+        <label for="ip-cidr">Prefixo CIDR</label>
+        <select id="ip-cidr">
+          <option value="8">/8</option>
+          <option value="16">/16</option>
+          <option value="24" selected>/24</option>
+          <option value="25">/25</option>
+          <option value="26">/26</option>
+          <option value="27">/27</option>
+          <option value="28">/28</option>
+          <option value="29">/29</option>
+          <option value="30">/30</option>
+          <option value="31">/31</option>
+          <option value="32">/32</option>
+        </select>
+      </div>
+    </form>
+
+    <div id="ip-error" style="display:none; max-width:720px; margin:0 auto 24px; padding:14px 18px; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; color:#991b1b; font-size:14px;"></div>
+
+    <div id="ip-results" style="max-width:720px; margin:0 auto;">
+      <div class="stats-combo" style="background:var(--navy); border-radius:var(--radius); padding:28px 24px; margin-top:8px;">
+        <div class="stats-hero">
+          <div class="stats-hero-number" id="res-network" style="font-size:30px;">—</div>
+          <div class="stats-hero-label">Endereço de rede</div>
+        </div>
+        <div class="stats-divider"></div>
+        <div class="stats-bars" style="gap:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Endereço de broadcast</span><strong style="color:var(--text-light);" id="res-broadcast">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Máscara de sub-rede</span><strong style="color:var(--text-light);" id="res-mask">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Máscara wildcard</span><strong style="color:var(--text-light);" id="res-wildcard">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Total de endereços</span><strong style="color:var(--cyan);" id="res-total">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Hosts utilizáveis</span><strong style="color:var(--cyan);" id="res-usable">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Primeiro host utilizável</span><strong style="color:var(--text-light);" id="res-first">—</strong></div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted-light);"><span>Último host utilizável</span><strong style="color:var(--text-light);" id="res-last">—</strong></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px;">
+        <h3>Classificação do endereço</h3>
+        <div class="raid-grid-2" style="margin-top:12px;">
+          <p style="margin:0;"><strong>Classe de IP:</strong> <span id="res-class">—</span></p>
+          <p style="margin:0;"><strong>Âmbito:</strong> <span id="res-scope">—</span></p>
+        </div>
+        <p style="margin-top:14px; margin-bottom:0; font-size:13px; font-family:monospace; color:#334155; word-break:break-all;"><strong>Binário (IP / máscara):</strong><br><span id="res-binary">—</span></p>
+      </div>
+
+      <p id="ip-note" style="display:none; font-size:13px; color:var(--text-muted-dark); margin-top:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px;"></p>
+
+      <p style="font-size:12px; color:var(--text-muted-dark); margin-top:16px; text-align:center;">Suporta apenas endereços IPv4. Não envia nenhum dado — todo o cálculo acontece no navegador.</p>
+    </div>
+
+    <div style="margin-top:40px; text-align:center;">
+      <p>Precisas de ajuda a desenhar ou documentar a sua rede?</p>
+      <a href="../contacto.html" class="btn btn-primary">Fale com a gente →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>SMB Services</h4>
+        <p style="color:var(--text-muted-light); font-size:14px;">Resiliência para seu negócio.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../sobre.html">Sobre Nós</a></li>
+          <li><a href="../servicos/index.html">Serviços</a></li>
+          <li><a href="index.html">Ferramentas</a></li>
+          <li><a href="../blog/index.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../contacto.html">Contato</a></li>
+          <li><a href="../faq.html#area-privada">Área privada</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SMB Services. Todos os direitos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/ip-calculator.js?v=1" defer></script>
+</body>
+</html>
