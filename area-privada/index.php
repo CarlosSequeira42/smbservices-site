@@ -86,6 +86,12 @@ function botoes_acao($p, $busca, $verAtual) {
       grid-template-columns: 1fr;
     }
   }
+  .conteudo-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 </style>
 </head>
 <body>
@@ -162,11 +168,12 @@ function botoes_acao($p, $busca, $verAtual) {
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                   <div>
                     <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$p['categoria']]); ?><?php if (!empty($p['tecnologia'])): ?> &middot; <?php echo htmlspecialchars($p['tecnologia']); ?><?php endif; ?></div>
-                    <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($p['titulo']); ?></h2>
+                    <h2 style="margin-bottom:14px;"><a href="index.php?ver=<?php echo urlencode($p['id']) . $sufixoBusca; ?>" style="color:inherit; text-decoration:none;"><?php echo htmlspecialchars($p['titulo']); ?></a></h2>
                   </div>
                   <?php botoes_acao($p, $busca, ''); ?>
                 </div>
-                <div style="white-space:pre-wrap; font-size:15px; line-height:1.6;"><?php echo htmlspecialchars($p['conteudo']); ?></div>
+                <div class="conteudo-preview" style="white-space:pre-wrap; font-size:15px; line-height:1.6;"><?php echo htmlspecialchars($p['conteudo']); ?></div>
+                <p style="margin-top:10px; margin-bottom:0;"><a href="index.php?ver=<?php echo urlencode($p['id']) . $sufixoBusca; ?>" style="font-size:13px;">Ver procedimento completo →</a></p>
               </div>
             <?php endforeach; ?>
           <?php else: ?>
@@ -178,11 +185,12 @@ function botoes_acao($p, $busca, $verAtual) {
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                   <div>
                     <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$ultimo['categoria']]); ?><?php if (!empty($ultimo['tecnologia'])): ?> &middot; <?php echo htmlspecialchars($ultimo['tecnologia']); ?><?php endif; ?></div>
-                    <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($ultimo['titulo']); ?></h2>
+                    <h2 style="margin-bottom:14px;"><a href="index.php?ver=<?php echo urlencode($ultimo['id']) . $sufixoBusca; ?>" style="color:inherit; text-decoration:none;"><?php echo htmlspecialchars($ultimo['titulo']); ?></a></h2>
                   </div>
                   <?php botoes_acao($ultimo, $busca, ''); ?>
                 </div>
-                <div style="white-space:pre-wrap; font-size:15px; line-height:1.6;"><?php echo htmlspecialchars($ultimo['conteudo']); ?></div>
+                <div class="conteudo-preview" style="white-space:pre-wrap; font-size:15px; line-height:1.6;"><?php echo htmlspecialchars($ultimo['conteudo']); ?></div>
+                <p style="margin-top:10px; margin-bottom:0;"><a href="index.php?ver=<?php echo urlencode($ultimo['id']) . $sufixoBusca; ?>" style="font-size:13px;">Ver procedimento completo →</a></p>
               </div>
             <?php endif; ?>
           <?php endif; ?>

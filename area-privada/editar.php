@@ -65,6 +65,14 @@ try {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css?v=2">
+<style>
+  .conteudo-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
 </head>
 <body>
 
@@ -157,7 +165,7 @@ try {
           <?php if (!empty($p['tecnologia'])): ?>
             <div style="font-size:12px; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars($p['tecnologia']); ?></div>
           <?php endif; ?>
-          <p style="white-space:pre-wrap; font-size:14px; color:#334155;"><?php echo htmlspecialchars($p['conteudo']); ?></p>
+          <p class="conteudo-preview" style="white-space:pre-wrap; font-size:14px; color:#334155;"><?php echo htmlspecialchars($p['conteudo']); ?></p>
           <div style="display:flex; gap:10px; margin-top:12px;">
             <a href="editar.php?editar=<?php echo urlencode($p['id']); ?>" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 14px;">Editar</a>
             <form method="post" action="editar.php" onsubmit="return confirm('Remover este procedimento?');" style="margin:0;">
