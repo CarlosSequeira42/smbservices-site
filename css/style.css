@@ -178,6 +178,13 @@ nav.main-nav a.lang-link:hover { border-color: rgba(241,245,249,0.6); }
 }
 .section-dark p { color: var(--text-muted-light); }
 
+.stats-intro {
+  white-space: normal;
+}
+@media (min-width: 960px) {
+  .stats-intro { white-space: nowrap; }
+}
+
 h1 { font-size: 42px; font-weight: 800; line-height: 1.15; }
 h2 { font-size: 30px; font-weight: 800; margin-bottom: 16px; }
 h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
