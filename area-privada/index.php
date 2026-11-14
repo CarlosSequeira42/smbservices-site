@@ -144,7 +144,7 @@ function botoes_acao($p, $busca, $verAtual) {
             <div class="card">
               <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                 <div>
-                  <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$destaque['categoria']]); ?></div>
+                  <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$destaque['categoria']]); ?><?php if (!empty($destaque['tecnologia'])): ?> &middot; <?php echo htmlspecialchars($destaque['tecnologia']); ?><?php endif; ?></div>
                   <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($destaque['titulo']); ?></h2>
                 </div>
                 <?php botoes_acao($destaque, $busca, $destaque['id']); ?>
@@ -161,7 +161,7 @@ function botoes_acao($p, $busca, $verAtual) {
               <div class="card" style="margin-bottom:16px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                   <div>
-                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$p['categoria']]); ?></div>
+                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$p['categoria']]); ?><?php if (!empty($p['tecnologia'])): ?> &middot; <?php echo htmlspecialchars($p['tecnologia']); ?><?php endif; ?></div>
                     <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($p['titulo']); ?></h2>
                   </div>
                   <?php botoes_acao($p, $busca, ''); ?>
@@ -177,7 +177,7 @@ function botoes_acao($p, $busca, $verAtual) {
               <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                   <div>
-                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$ultimo['categoria']]); ?></div>
+                    <div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars(CATEGORIAS[$ultimo['categoria']]); ?><?php if (!empty($ultimo['tecnologia'])): ?> &middot; <?php echo htmlspecialchars($ultimo['tecnologia']); ?><?php endif; ?></div>
                     <h2 style="margin-bottom:14px;"><?php echo htmlspecialchars($ultimo['titulo']); ?></h2>
                   </div>
                   <?php botoes_acao($ultimo, $busca, ''); ?>

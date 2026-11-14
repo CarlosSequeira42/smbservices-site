@@ -15,8 +15,9 @@ try {
             $titulo = trim($_POST['titulo'] ?? '');
             $conteudo = trim($_POST['conteudo'] ?? '');
             $categoria = $_POST['categoria'] ?? '';
+            $tecnologia = trim($_POST['tecnologia'] ?? '');
             if ($titulo !== '') {
-                inserir_procedimento($titulo, $categoria, $conteudo);
+                inserir_procedimento($categoria, $tecnologia, $titulo, $conteudo);
                 $mensagem = 'Procedimento adicionado.';
             } else {
                 $mensagem = 'O título é obrigatório.';
@@ -26,7 +27,8 @@ try {
             $titulo = trim($_POST['titulo'] ?? '');
             $conteudo = trim($_POST['conteudo'] ?? '');
             $categoria = $_POST['categoria'] ?? '';
-            atualizar_procedimento($id, $titulo, $categoria, $conteudo);
+            $tecnologia = trim($_POST['tecnologia'] ?? '');
+            atualizar_procedimento($id, $categoria, $tecnologia, $titulo, $conteudo);
             $mensagem = 'Procedimento atualizado.';
         } elseif ($acao === 'remover') {
             $id = $_POST['id'] ?? '';
@@ -107,16 +109,20 @@ try {
           <input type="hidden" name="id" value="<?php echo htmlspecialchars($editando['id']); ?>">
         <?php endif; ?>
         <div class="form-field">
-          <label for="titulo">Título</label>
-          <input type="text" id="titulo" name="titulo" required value="<?php echo $editando ? htmlspecialchars($editando['titulo']) : ''; ?>">
-        </div>
-        <div class="form-field">
           <label for="categoria">Serviço / Categoria</label>
           <select id="categoria" name="categoria" required>
             <?php foreach (CATEGORIAS as $chave => $nome): ?>
               <option value="<?php echo htmlspecialchars($chave); ?>" <?php echo ($editando && $editando['categoria'] === $chave) ? 'selected' : ''; ?>><?php echo htmlspecialchars($nome); ?></option>
             <?php endforeach; ?>
           </select>
+        </div>
+        <div class="form-field">
+          <label for="tecnologia">Tecnologia</label>
+          <input type="text" id="tecnologia" name="tecnologia" placeholder="Ex.: Synology DSM 7.2, Windows Server 2022…" value="<?php echo $editando ? htmlspecialchars($editando['tecnologia']) : ''; ?>">
+        </div>
+        <div class="form-field">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" required value="<?php echo $editando ? htmlspecialchars($editando['titulo']) : ''; ?>">
         </div>
         <div class="form-field">
           <label for="conteudo">Conteúdo</label>
@@ -148,6 +154,9 @@ try {
       <?php foreach ($grupos[$chave] as $p): ?>
         <div class="card" style="margin-bottom:16px;">
           <h3 style="margin-bottom:6px;"><?php echo htmlspecialchars($p['titulo']); ?></h3>
+          <?php if (!empty($p['tecnologia'])): ?>
+            <div style="font-size:12px; color:var(--text-muted-dark); margin-bottom:8px;"><?php echo htmlspecialchars($p['tecnologia']); ?></div>
+          <?php endif; ?>
           <p style="white-space:pre-wrap; font-size:14px; color:#334155;"><?php echo htmlspecialchars($p['conteudo']); ?></p>
           <div style="display:flex; gap:10px; margin-top:12px;">
             <a href="editar.php?editar=<?php echo urlencode($p['id']); ?>" class="btn btn-ghost" style="border-color:var(--border-light); color:var(--text-dark); font-size:13px; padding:8px 14px;">Editar</a>

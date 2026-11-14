@@ -60,6 +60,7 @@ function garantir_schema($pdo) {
         "CREATE TABLE IF NOT EXISTS procedimentos (
             id INT AUTO_INCREMENT PRIMARY KEY,
             categoria VARCHAR(40) NOT NULL DEFAULT 'outros',
+            tecnologia VARCHAR(255) NOT NULL DEFAULT '',
             titulo VARCHAR(255) NOT NULL,
             conteudo MEDIUMTEXT,
             favorito TINYINT(1) NOT NULL DEFAULT 0,
@@ -73,6 +74,12 @@ function garantir_schema($pdo) {
     $coluna = $pdo->query("SHOW COLUMNS FROM procedimentos LIKE 'favorito'")->fetch();
     if (!$coluna) {
         $pdo->exec('ALTER TABLE procedimentos ADD COLUMN favorito TINYINT(1) NOT NULL DEFAULT 0');
+    }
+
+    // Compatibilidade com tabelas criadas antes do campo "tecnologia" existir.
+    $colunaTecnologia = $pdo->query("SHOW COLUMNS FROM procedimentos LIKE 'tecnologia'")->fetch();
+    if (!$colunaTecnologia) {
+        $pdo->exec("ALTER TABLE procedimentos ADD COLUMN tecnologia VARCHAR(255) NOT NULL DEFAULT '' AFTER categoria");
     }
 }
 
@@ -95,14 +102,15 @@ function migrar_json_se_necessario($pdo) {
     }
 
     $stmt = $pdo->prepare(
-        'INSERT INTO procedimentos (categoria, titulo, conteudo) VALUES (:categoria, :titulo, :conteudo)'
+        'INSERT INTO procedimentos (categoria, tecnologia, titulo, conteudo) VALUES (:categoria, :tecnologia, :titulo, :conteudo)'
     );
     foreach ($dados as $p) {
         $categoria = (isset($p['categoria']) && isset(CATEGORIAS[$p['categoria']])) ? $p['categoria'] : 'outros';
         $stmt->execute([
-            'categoria' => $categoria,
-            'titulo'    => $p['titulo'] ?? '',
-            'conteudo'  => $p['conteudo'] ?? '',
+            'categoria'  => $categoria,
+            'tecnologia' => $p['tecnologia'] ?? '',
+            'titulo'     => $p['titulo'] ?? '',
+            'conteudo'   => $p['conteudo'] ?? '',
         ]);
     }
 
@@ -117,7 +125,7 @@ function listar_procedimentos($busca = null) {
 
     if ($busca !== null && trim($busca) !== '') {
         $stmt = $pdo->prepare(
-            'SELECT * FROM procedimentos WHERE titulo LIKE :q OR conteudo LIKE :q ORDER BY categoria, titulo'
+            'SELECT * FROM procedimentos WHERE titulo LIKE :q OR conteudo LIKE :q OR tecnologia LIKE :q ORDER BY categoria, titulo'
         );
         $stmt->execute(['q' => '%' . $busca . '%']);
     } else {
@@ -194,26 +202,26 @@ function agrupar_por_categoria($procedimentos) {
     return $grupos;
 }
 
-function inserir_procedimento($titulo, $categoria, $conteudo) {
+function inserir_procedimento($categoria, $tecnologia, $titulo, $conteudo) {
     if (!isset(CATEGORIAS[$categoria])) {
         $categoria = 'outros';
     }
     $pdo = conectar_bd();
     $stmt = $pdo->prepare(
-        'INSERT INTO procedimentos (categoria, titulo, conteudo) VALUES (:categoria, :titulo, :conteudo)'
+        'INSERT INTO procedimentos (categoria, tecnologia, titulo, conteudo) VALUES (:categoria, :tecnologia, :titulo, :conteudo)'
     );
-    $stmt->execute(['categoria' => $categoria, 'titulo' => $titulo, 'conteudo' => $conteudo]);
+    $stmt->execute(['categoria' => $categoria, 'tecnologia' => $tecnologia, 'titulo' => $titulo, 'conteudo' => $conteudo]);
 }
 
-function atualizar_procedimento($id, $titulo, $categoria, $conteudo) {
+function atualizar_procedimento($id, $categoria, $tecnologia, $titulo, $conteudo) {
     if (!isset(CATEGORIAS[$categoria])) {
         $categoria = 'outros';
     }
     $pdo = conectar_bd();
     $stmt = $pdo->prepare(
-        'UPDATE procedimentos SET titulo = :titulo, categoria = :categoria, conteudo = :conteudo WHERE id = :id'
+        'UPDATE procedimentos SET categoria = :categoria, tecnologia = :tecnologia, titulo = :titulo, conteudo = :conteudo WHERE id = :id'
     );
-    $stmt->execute(['titulo' => $titulo, 'categoria' => $categoria, 'conteudo' => $conteudo, 'id' => $id]);
+    $stmt->execute(['categoria' => $categoria, 'tecnologia' => $tecnologia, 'titulo' => $titulo, 'conteudo' => $conteudo, 'id' => $id]);
 }
 
 function remover_procedimento($id) {
